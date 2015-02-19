@@ -16,7 +16,11 @@ var Calculator = {
 				case "^":
 					return this.toThePower(firstNumber, secondNumber);
 					break;
+				case "%":
+					return this.modulo(firstNumber, secondNumber);
+					break;
 				default:
+					alert("ERROR");
 					return "ERROR";
 			}
 		},
@@ -28,7 +32,11 @@ var Calculator = {
 				case "\u221A": //radical symbol
 					return this.squareRoot(number);
 					break;
+				case "!":
+					return this.factorial(number);
+					break;
 				default:
+					alert("ERROR");
 					return "ERROR";
 			}
 		},
@@ -44,14 +52,38 @@ var Calculator = {
 		divide: function(x,y) {
 			return x/y;
 		},
-		square: function(x) {
-			return x*x;
+		toThePower: function(x,y) {
+			return Math.pow(x,y);
+		},
+		modulo: function(x,y) {
+			return x%y;
 		},
 		squareRoot: function(x) {
 			return Math.sqrt(x);
 		},
-		toThePower: function(x,y) {
-			return Math.pow(x,y);
+		square: function(x) {
+			return x*x;
+		},
+		factorial: function(x) {
+			if(x<150) { //prevent too large of a calculation time
+				if(x%1 === 0) { //number is integer
+					var final = x;
+					for (y = 2; y<x; y++) {
+						final *= y;
+					}
+					return final;
+				}
+			}
+		},
+		divisors: function(x) {
+			divisors = [];
+			for(i = 1; i<=(x/2); i++) {
+				if(x%i === 0) {
+					divisors.push(i);
+				}
+			}
+			divisors.push(x);
+			return divisors;
 		}
 	};
 	
@@ -63,7 +95,7 @@ $(document).ready(function() {
 	
 	function displayResults($result) {
 		$resultLength = $result.toString().length;
-		if($resultLength<28 && isFinite($result)) {
+		if(($resultLength<28 && isFinite($result)) || $result==".") {
 			if($resultLength<12) {
 				$("#output").css("font-size", "87px");	
 			} else if($resultLength<22) {
@@ -73,17 +105,19 @@ $(document).ready(function() {
 			};
 			$("#output").text($result);
 		} else {
-			$("#output").addClass("too-large");
+			$("#output").addClass("too-large"); 
 			$("#output").text("Number is too large");
 		}
 		
 	};
 	
 	$("#equals").click(function() {
-		$secondNumber = parseFloat($("#output").text());
-		$value = Calculator.selectOperation($operatorSelected, $firstNumber, $secondNumber);
-		displayResults($value);
-		$operatorSelected = "";
+		if($operatorSelected !== "") {
+			$secondNumber = parseFloat($("#output").text());
+			$value = Calculator.selectOperation($operatorSelected, $firstNumber, $secondNumber);
+			displayResults($value);
+			$operatorSelected = "";
+		}
 	}),
 	
 	//view inputted numbers on screen
@@ -135,7 +169,39 @@ $(document).ready(function() {
 		operatorChosen = false;
 		$(".operator").removeClass("operator-selected");
 		$("#output").removeClass("too-large");
-	})
+		$("#stats p").empty();
+	}),
+	
+	$("#backspace").click(function() {
+		var $outputText = $("#output").text();
+		var $outputLength = $outputText.length;
+		if($outputLength === 1) {
+			displayResults("0");
+		} else {
+			displayResults($outputText.substr(0,$outputLength-1));
+		}
+	}),
+	
+	$("#stats").click(function() {
+		$("#stats p").empty();
+		var $output = parseFloat($("#output").text());
+		if($output%1===0 && $output>2) {
+			if($output>500000000) {
+				$("#stats p").append("For performance reasons, numbers over 500 million are not evaluated");
+			} else {
+				$value = Calculator.divisors($output);
+				var $arrayLength = $value.length;
+				if($arrayLength == 2) {
+					$("#stats p").append("The number " + $value[1] + " is prime");
+				} else {
+					$("#stats p").append("The number " + $value[$value.length-1] + " has " + $arrayLength + " positive divisors: ");
+					for(i=0; i<$arrayLength; i++) {
+						$("#stats p").append($value[i] + " ");
+					}
+				}
+			}
+		}
+	});
 });
 
 

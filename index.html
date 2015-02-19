@@ -7,6 +7,7 @@
 </head>
 
 <body>
+<div id = "display">
 <div id = "calculator">
 	<div id = "output">0</div><br/>
 	<div id = "buttons">
@@ -14,9 +15,17 @@
 		<div class = "operator">^</div><div class = "digit">4</div><div class = "digit">5</div><div class = "digit">6</div><div class = "operator">-</div><br/>
 		<div class = "immediate-operator">&radic;</div><div class = "digit">1</div><div class = "digit">2</div><div class = "digit">3</div><div class = "operator">&divide;</div></br>
 		<div id = "pi">&pi;</div><div id = "clear">C</div><div class = "digit">&middot;</div><div class = "digit">0</div><div class = "operator">X</div><br/>
-		<div id = "equals">=</div>
+		<div class = "immediate-operator">!</div><div id = "backspace">&larr;</div><div class = "operator">%</div><div id = "equals">=</div>
 	</div>
+</div> <!--calculator-->
+<br/>
+
+<div id = "stats">
+	<div id = "show-stats">Divisors</div>
+	<p></p>
 </div>
+</div> <!--display-->
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script type = "text/javascript" src = "calculator.js"></script>
 </body>

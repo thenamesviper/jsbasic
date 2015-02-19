@@ -1,5 +1,4 @@
-#calculator {
-	text-align:center;
+#display {
 		/*stop text on buttons from being highlighted*/
 		-webkit-touch-callout: none;
 		-webkit-user-select: none;
@@ -7,6 +6,10 @@
 		-moz-user-select: none;
 		-ms-user-select: none;
 		user-select: none;
+	}
+
+#calculator {
+	text-align:center;
 	}
 #output {
 	background-color: #ddd;
@@ -52,4 +55,26 @@
 .too-large {
 	font-weight:bold;
 	font-size:40px;
+	}
+#stats {
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+	}
+#show-stats{
+	font-size: 25px;
+	color:white;
+	width:200px;
+	height:35px;
+	vertical-align: middle;
+	background-color:gray;
+	box-shadow: -3px 3px black;
+	cursor: pointer
+	}
+#show-stats:active {
+	box-shadow: 0 0 black;
+	transform: translate(-3px, 3px);
+	}
+p {
+	font-size:20px;
 	}
